@@ -1,0 +1,8 @@
+{
+  "name": "Ceylon DayOuts",
+  "description": "Sri Lanka\u0027s premier accommodation and dayout booking platform for short stays, villas, cabanas, and staycation experiences.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

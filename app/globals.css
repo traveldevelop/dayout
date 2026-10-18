@@ -1,0 +1,75 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@layer base {
+  body {
+    background-color: #f8fafc;
+    background-image: 
+      radial-gradient(at 10% 10%, rgba(16, 185, 129, 0.08) 0px, transparent 40%),
+      radial-gradient(at 90% 15%, rgba(56, 189, 248, 0.08) 0px, transparent 45%),
+      radial-gradient(at 50% 50%, rgba(251, 191, 36, 0.04) 0px, transparent 50%),
+      radial-gradient(at 80% 85%, rgba(20, 184, 166, 0.07) 0px, transparent 50%),
+      radial-gradient(at 20% 90%, rgba(14, 165, 233, 0.06) 0px, transparent 40%);
+    background-attachment: fixed;
+    color: #0f172a;
+  }
+}
+
+/* 3D Glassmorphism Utilities */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 
+    0 10px 30px -10px rgba(0, 0, 0, 0.05),
+    0 20px 40px -15px rgba(16, 185, 129, 0.05),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+.glass-card-3d {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 
+    0 8px 24px -4px rgba(15, 23, 42, 0.06),
+    0 2px 6px -1px rgba(15, 23, 42, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card-3d:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(52, 211, 153, 0.45);
+  box-shadow: 
+    0 20px 40px -10px rgba(16, 185, 129, 0.15),
+    0 12px 20px -8px rgba(15, 23, 42, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.btn-3d-emerald {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 4px 14px 0 rgba(16, 185, 129, 0.35),
+    0 2px 4px 0 rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-3d-emerald:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 22px 0 rgba(16, 185, 129, 0.45),
+    0 4px 6px 0 rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.btn-3d-emerald:active {
+  transform: translateY(1px);
+  box-shadow: 
+    0 2px 6px 0 rgba(16, 185, 129, 0.3),
+    inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
