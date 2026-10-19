@@ -43,7 +43,8 @@ import {
   Layers,
   Flame,
   CookingPot,
-  Tag
+  Tag,
+  Send
 } from 'lucide-react';
 
 export default function PropertyDetailPage() {
@@ -60,7 +61,14 @@ export default function PropertyDetailPage() {
     currentUser 
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<'EXPLORE' | 'WISHLIST' | 'MY_BOOKINGS' | 'HOST_DASHBOARD' | 'ADMIN_PANEL'>('EXPLORE');
+  const [activeTab, setActiveTab] = useState<'EXPLORE' | 'CONTACTS' | 'WISHLIST' | 'MY_BOOKINGS' | 'HOST_DASHBOARD' | 'ADMIN_PANEL'>('EXPLORE');
+  const [activeSectionTab, setActiveSectionTab] = useState<'PACKAGES' | 'FACILITIES' | 'CONTACTS' | 'REVIEWS'>('PACKAGES');
+  const [contactFormName, setContactFormName] = useState('');
+  const [contactFormPhone, setContactFormPhone] = useState('');
+  const [contactFormMsg, setContactFormMsg] = useState('');
+  const [contactFormGuests, setContactFormGuests] = useState('4');
+  const [contactFormDate, setContactFormDate] = useState('');
+  const [contactFormSent, setContactFormSent] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
 
@@ -287,76 +295,21 @@ export default function PropertyDetailPage() {
           </div>
         </div>
 
-        {/* Dedicated WhatsApp Quick Link Banner (Direct 1-Click Chat) */}
-        <div className="p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white shadow-[0_12px_30px_rgba(16,185,129,0.28)] border-2 border-emerald-400/50 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3.5 text-center sm:text-left">
-            <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center flex-shrink-0 shadow-inner">
-              <MessageCircle className="w-7 h-7 text-white fill-white" />
-            </div>
-            <div>
-              <div className="flex flex-wrap items-center gap-2 justify-center sm:justify-start">
-                <span className="text-[10px] font-black tracking-widest uppercase bg-white/25 px-2.5 py-0.5 rounded-full inline-block">
-                  WhatsApp Direct Quick Link
-                </span>
-                <span className="text-xs font-bold text-emerald-100">
-                  ක්ලික් කර කෙලින්ම Chat කරන්න
-                </span>
-              </div>
-              <p className="font-black text-sm sm:text-base leading-snug mt-1">
-                📲 WhatsApp Quick Link : <span className="underline decoration-white/50">{whatsappNumber}</span>
-              </p>
-              <p className="text-xs text-emerald-100 font-medium">
-                වැඩි විස්තර සහ Booking සඳහා Call හෝ WhatsApp කරන්න: ☎️ {mainPhone} {secondPhone ? `/ ☎️ ${secondPhone}` : ''}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto justify-center sm:justify-end">
-            <a
-              href={whatsappChatUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto px-5 py-3 bg-white hover:bg-emerald-50 active:scale-95 text-emerald-950 font-black text-xs sm:text-sm rounded-2xl shadow-lg flex items-center justify-center gap-2 transition-all cursor-pointer border border-emerald-200"
-            >
-              <MessageCircle className="w-5 h-5 text-emerald-600 fill-emerald-600" />
-              <span>Click to Chat on WhatsApp (Quick Link)</span>
-            </a>
-            <a
-              href={`tel:${mainPhone}`}
-              className="px-4 py-3 bg-emerald-900/60 hover:bg-emerald-900 text-white font-extrabold text-xs rounded-2xl border border-white/20 flex items-center justify-center gap-1.5 transition-all"
-            >
-              <PhoneCall className="w-4 h-4" />
-              <span>Call: {mainPhone}</span>
-            </a>
-          </div>
-        </div>
 
         {/* Special Promo Banner if available */}
         {property.specialPromoBanner && (
-          <div className="p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-amber-500 via-emerald-600 to-teal-600 text-white shadow-[0_12px_30px_rgba(16,185,129,0.25)] border border-white/40 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-3 text-center sm:text-left">
-              <span className="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center flex-shrink-0 text-xl shadow-xs">
-                🔥
+          <div className="p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-amber-500 via-emerald-600 to-teal-600 text-white shadow-[0_12px_30px_rgba(16,185,129,0.25)] border border-white/40 flex items-center gap-3">
+            <span className="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center flex-shrink-0 text-xl shadow-xs">
+              🔥
+            </span>
+            <div className="flex-1">
+              <span className="text-[10px] font-black tracking-widest uppercase bg-white/25 px-2.5 py-0.5 rounded-full inline-block mb-1">
+                Special Verified Deal
               </span>
-              <div>
-                <span className="text-[10px] font-black tracking-widest uppercase bg-white/25 px-2.5 py-0.5 rounded-full inline-block mb-1">
-                  Special Verified Deal
-                </span>
-                <p className="font-black text-sm sm:text-base leading-snug">
-                  {property.specialPromoBanner}
-                </p>
-              </div>
+              <p className="font-black text-sm sm:text-base leading-snug">
+                {property.specialPromoBanner}
+              </p>
             </div>
-
-            <a
-              href={whatsappChatUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto px-5 py-2.5 bg-white text-emerald-900 font-extrabold text-xs rounded-2xl hover:bg-emerald-50 shadow-md flex items-center justify-center gap-2 transition-all flex-shrink-0"
-            >
-              <MessageCircle className="w-4 h-4 text-emerald-600" />
-              <span>Chat on WhatsApp</span>
-            </a>
           </div>
         )}
 
@@ -373,34 +326,18 @@ export default function PropertyDetailPage() {
               </span>
             </div>
 
-            {/* Direct Contact Numbers & Fast Inquiries */}
-            <div className="flex flex-wrap items-center gap-2">
-              <a
-                href={`tel:${mainPhone}`}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200/80 text-xs font-black hover:bg-emerald-100 transition-all shadow-2xs"
-              >
-                <PhoneCall className="w-3.5 h-3.5 text-emerald-600" />
-                <span>Call: {mainPhone}</span>
-              </a>
-              {secondPhone && (
-                <a
-                  href={`tel:${secondPhone}`}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 text-slate-800 border border-slate-200 text-xs font-bold hover:bg-slate-100 transition-all shadow-2xs"
-                >
-                  <Phone className="w-3.5 h-3.5 text-slate-600" />
-                  <span>{secondPhone}</span>
-                </a>
-              )}
-              <a
-                href={whatsappChatUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-black hover:bg-emerald-500 transition-all shadow-xs"
-              >
-                <MessageCircle className="w-3.5 h-3.5 fill-white" />
-                <span>WhatsApp Quick Link</span>
-              </a>
-            </div>
+            {/* Quick Link to Contacts Tab */}
+            <button
+              onClick={() => {
+                setActiveSectionTab('CONTACTS');
+                const el = document.getElementById('property-tabs-section');
+                el?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200/80 text-xs font-bold transition-all shadow-2xs cursor-pointer"
+            >
+              <PhoneCall className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Contacts & Inquiries Tab</span>
+            </button>
           </div>
 
           <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
@@ -461,10 +398,73 @@ export default function PropertyDetailPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
           
           {/* Left 2 Columns: Description, Package Inclusions, Cabana Units, Amenities, Rules, Reviews */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-6">
             
-            {/* SEPARATE Dayout Package Inclusions Highlight Box */}
-            {property.dayoutPackage && (
+            {/* Dedicated Tabs Navigation */}
+            <div id="property-tabs-section" className="bg-white/80 backdrop-blur-md p-1.5 rounded-2xl border border-white/90 shadow-sm flex items-center gap-1.5 overflow-x-auto scrollbar-none">
+              <button
+                type="button"
+                onClick={() => setActiveSectionTab('PACKAGES')}
+                className={`px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 cursor-pointer flex-shrink-0 ${
+                  activeSectionTab === 'PACKAGES'
+                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/20 scale-[1.02]'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                }`}
+              >
+                <Sun className="w-3.5 h-3.5" />
+                <span>Packages & Rates</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveSectionTab('FACILITIES')}
+                className={`px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 cursor-pointer flex-shrink-0 ${
+                  activeSectionTab === 'FACILITIES'
+                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/20 scale-[1.02]'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                }`}
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Facilities & Garden</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveSectionTab('CONTACTS')}
+                className={`px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 cursor-pointer flex-shrink-0 ${
+                  activeSectionTab === 'CONTACTS'
+                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/20 scale-[1.02]'
+                    : 'text-emerald-800 bg-emerald-50/90 hover:bg-emerald-100 border border-emerald-200/60 font-black'
+                }`}
+              >
+                <PhoneCall className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Contacts & Inquiries</span>
+                <span className={`text-[10px] px-2 py-0.5 rounded-full font-black ${
+                  activeSectionTab === 'CONTACTS' ? 'bg-white text-emerald-800' : 'bg-emerald-200 text-emerald-950'
+                }`}>
+                  Hotlines
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveSectionTab('REVIEWS')}
+                className={`px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 cursor-pointer flex-shrink-0 ${
+                  activeSectionTab === 'REVIEWS'
+                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/20 scale-[1.02]'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                }`}
+              >
+                <Star className="w-3.5 h-3.5 fill-current" />
+                <span>Reviews ({propertyReviews.length})</span>
+              </button>
+            </div>
+
+            {/* TAB 1: PACKAGES & RATES */}
+            {activeSectionTab === 'PACKAGES' && (
+              <div className="space-y-8 animate-in fade-in">
+                {/* SEPARATE Dayout Package Inclusions Highlight Box */}
+                {property.dayoutPackage && (
               <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-amber-50 via-orange-50/50 to-amber-100/40 border border-amber-300/80 shadow-[0_15px_35px_rgba(245,158,11,0.12)] space-y-5">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-amber-200/80 pb-4">
                   <div>
@@ -629,126 +629,6 @@ export default function PropertyDetailPage() {
               </div>
             )}
 
-            {/* Booking & Direct WhatsApp Contact Showcase Card */}
-            <div className="bg-gradient-to-br from-emerald-50 via-teal-50 to-white rounded-3xl p-6 sm:p-7 border-2 border-emerald-500/30 shadow-[0_12px_30px_rgba(16,185,129,0.12)] space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-emerald-200/60 pb-3">
-                <div>
-                  <span className="text-[11px] font-black uppercase text-emerald-800 bg-emerald-100/90 px-3 py-0.5 rounded-full inline-block mb-1">
-                    Direct Contact & WhatsApp Quick Link
-                  </span>
-                  <h3 className="text-xl sm:text-2xl font-black text-slate-900">
-                    වැඩි විස්තර සහ Booking සඳහා අමතන්න:
-                  </h3>
-                  <p className="text-xs text-slate-600 font-medium">
-                    ගොඩක්ම සාධාරණ මිල ගණන් සමගින් ඔයාලගේ නිවාඩුවත් නිදහසේ ගත කරන්න දැන්ම ඔයාලගේ දවසත් වෙන් කරගන්න.
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
-                {/* WhatsApp Quick Link */}
-                <a
-                  href={whatsappChatUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-extrabold shadow-md hover:from-emerald-500 hover:to-teal-500 transition-all flex items-center justify-between group cursor-pointer"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
-                      <MessageCircle className="w-7 h-7 fill-white" />
-                    </div>
-                    <div>
-                      <span className="text-[10px] text-emerald-100 uppercase tracking-widest block font-bold">
-                        WhatsApp Quick Link
-                      </span>
-                      <span className="text-sm sm:text-base font-black text-white block">
-                        📲 WhatsApp : {whatsappNumber}
-                      </span>
-                      <span className="text-xs text-emerald-100 block">
-                        ක්ලික් කර කෙලින්ම WhatsApp Chat කරන්න
-                      </span>
-                    </div>
-                  </div>
-                  <ChevronRight className="w-5 h-5 text-white/80 group-hover:translate-x-1 transition-transform" />
-                </a>
-
-                {/* Phone Call Hotlines */}
-                <div className="p-4 sm:p-5 rounded-2xl bg-white border border-emerald-200 shadow-2xs space-y-2.5">
-                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block">
-                    Direct Calling Numbers (Call Now)
-                  </span>
-                  <div className="flex flex-wrap gap-2.5">
-                    <a
-                      href={`tel:${mainPhone}`}
-                      className="flex-1 py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-emerald-50 text-slate-800 hover:text-emerald-800 font-black text-xs border border-slate-200 flex items-center justify-center gap-2 transition-all shadow-2xs"
-                    >
-                      <PhoneCall className="w-4 h-4 text-emerald-600" />
-                      <span>☎️ {mainPhone}</span>
-                    </a>
-                    {secondPhone && (
-                      <a
-                        href={`tel:${secondPhone}`}
-                        className="flex-1 py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-emerald-50 text-slate-800 hover:text-emerald-800 font-black text-xs border border-slate-200 flex items-center justify-center gap-2 transition-all shadow-2xs"
-                      >
-                        <Phone className="w-4 h-4 text-emerald-600" />
-                        <span>☎️ {secondPhone}</span>
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Cabana Units & Pods Architecture (Single Business Listing with Multi-Units) */}
-            {property.rooms && property.rooms.length > 0 && (
-              <div className="glass-panel rounded-3xl p-6 border border-white/90 shadow-[0_15px_35px_rgba(0,0,0,0.04)] space-y-4">
-                <div>
-                  <span className="text-xs font-extrabold text-emerald-700 uppercase tracking-wider">Independent Units & Cabanas</span>
-                  <h3 className="text-lg font-black text-slate-900">
-                    Cabana Units & Pods ({property.rooms.length} Units Available)
-                  </h3>
-                  <p className="text-xs text-slate-500">
-                    Book individual pods/cabanas or reserve the whole property complex together.
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {property.rooms.map(unit => {
-                    const isSelected = selectedRoomId === unit.id;
-                    return (
-                      <div
-                        key={unit.id}
-                        onClick={() => setSelectedRoomId(unit.id)}
-                        className={`p-4 rounded-2xl border transition-all cursor-pointer space-y-2 ${
-                          isSelected
-                            ? 'bg-emerald-50/90 border-emerald-500 ring-2 ring-emerald-500/20 shadow-sm'
-                            : 'bg-white/80 border-slate-200/80 hover:border-emerald-300'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <h4 className="font-black text-sm text-slate-900">{unit.name}</h4>
-                          {isSelected && (
-                            <span className="text-[10px] font-black bg-emerald-600 text-white px-2 py-0.5 rounded-full">
-                              Selected
-                            </span>
-                          )}
-                        </div>
-
-                        <p className="text-xs text-slate-500 line-clamp-2">{unit.description}</p>
-
-                        <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between text-xs font-bold">
-                          <span className="text-slate-400">Max {unit.maxGuests} Guests</span>
-                          <span className="text-emerald-700 font-extrabold">
-                            LKR {(bookingType === 'DAYOUT' ? unit.pricePerDayoutLKR : unit.pricePerNightLKR).toLocaleString()}
-                            <span className="text-[10px] text-slate-400 font-normal">/{bookingType === 'DAYOUT' ? 'day' : 'night'}</span>
-                          </span>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
 
             {/* Description & Overview */}
             <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-white/90 shadow-[0_15px_35px_rgba(0,0,0,0.04)] space-y-3">
@@ -757,118 +637,337 @@ export default function PropertyDetailPage() {
                 {property.description}
               </p>
             </div>
+          </div>
+        )}
 
-            {/* Amenities Grid */}
-            <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-white/90 shadow-[0_15px_35px_rgba(0,0,0,0.04)] space-y-4">
-              <h3 className="text-lg font-black text-slate-900">Featured Amenities & Facilities</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {property.amenities.map(amenity => (
-                  <div key={amenity} className="flex items-center gap-2.5 p-3 rounded-2xl bg-white/80 border border-white/90 shadow-2xs text-xs font-bold text-slate-800">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                    <span>{amenity}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Policies & Rules */}
-            <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-white/90 shadow-[0_15px_35px_rgba(0,0,0,0.04)] space-y-4">
-              <h3 className="text-lg font-black text-slate-900">Stay & Dayout Policies</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                <div className="p-3.5 rounded-2xl bg-white/80 border border-white/90 shadow-2xs space-y-1">
-                  <span className="font-extrabold text-slate-400 uppercase text-[10px]">Dayout Hours</span>
-                  <p className="font-bold text-slate-800">09:00 AM - 05:30 PM (Evening Departure)</p>
-                </div>
-                <div className="p-3.5 rounded-2xl bg-white/80 border border-white/90 shadow-2xs space-y-1">
-                  <span className="font-extrabold text-slate-400 uppercase text-[10px]">Overnight Check-In / Check-Out</span>
-                  <p className="font-bold text-slate-800">Check-in: 02:00 PM • Check-out: 11:00 AM</p>
-                </div>
-                <div className="p-3.5 rounded-2xl bg-white/80 border border-white/90 shadow-2xs space-y-1">
-                  <span className="font-extrabold text-slate-400 uppercase text-[10px]">Cancellation Terms</span>
-                  <p className="font-bold text-slate-800">Free cancellation up to 48 hours prior to check-in.</p>
-                </div>
-                <div className="p-3.5 rounded-2xl bg-white/80 border border-white/90 shadow-2xs space-y-1">
-                  <span className="font-extrabold text-slate-400 uppercase text-[10px]">Channel Manager Sync</span>
-                  <p className="font-bold text-sky-700">Real-time calendar updates with Booking.com iCal.</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Verified Reviews Section */}
-            <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-white/90 shadow-[0_15px_35px_rgba(0,0,0,0.04)] space-y-6">
-              <div className="flex items-center justify-between border-b border-slate-200/60 pb-4">
-                <div>
-                  <h3 className="text-lg font-black text-slate-900">Guest Reviews</h3>
-                  <p className="text-xs text-slate-500">Verified travelers who booked on Ceylon DayOuts</p>
-                </div>
-                <div className="flex items-center gap-1.5 text-amber-700 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-200/60 font-black text-sm">
-                  <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                  {property.rating} ({propertyReviews.length} reviews)
-                </div>
-              </div>
-
-              {/* Review Feed */}
-              <div className="space-y-4">
-                {propertyReviews.length === 0 ? (
-                  <p className="text-xs text-slate-400 italic">No reviews yet for this listing. Be the first to share your experience!</p>
-                ) : (
-                  propertyReviews.map(rev => (
-                    <div key={rev.id} className="p-4 rounded-2xl bg-white/80 border border-white/90 shadow-2xs space-y-2">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2.5">
-                          <img src={rev.userAvatar} alt={rev.userName} className="w-8 h-8 rounded-full object-cover" />
-                          <div>
-                            <p className="text-xs font-black text-slate-900">{rev.userName}</p>
-                            <p className="text-[10px] text-slate-400">{rev.createdAt}</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-1 text-amber-500">
-                          {Array.from({ length: rev.rating }).map((_, i) => (
-                            <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                          ))}
-                        </div>
+            {/* TAB 2: FACILITIES & GARDEN */}
+            {activeSectionTab === 'FACILITIES' && (
+              <div className="space-y-6 animate-in fade-in">
+                {/* Amenities Grid */}
+                <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-white/90 shadow-[0_15px_35px_rgba(0,0,0,0.04)] space-y-4">
+                  <h3 className="text-lg font-black text-slate-900">Featured Amenities & Facilities</h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {property.amenities.map(amenity => (
+                      <div key={amenity} className="flex items-center gap-2.5 p-3 rounded-2xl bg-white/80 border border-white/90 shadow-2xs text-xs font-bold text-slate-800">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                        <span>{amenity}</span>
                       </div>
-                      <p className="text-xs text-slate-600 leading-relaxed">{rev.comment}</p>
-                    </div>
-                  ))
-                )}
-              </div>
-
-              {/* Leave a Review Form */}
-              <form onSubmit={handleReviewSubmit} className="pt-4 border-t border-slate-200/60 space-y-3">
-                <h4 className="text-xs font-black text-slate-800 uppercase tracking-wider">Leave a Review</h4>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-slate-500 font-bold">Your Rating:</span>
-                  <div className="flex gap-1">
-                    {[1, 2, 3, 4, 5].map(star => (
-                      <button
-                        type="button"
-                        key={star}
-                        onClick={() => setNewReviewRating(star)}
-                        className="p-1 cursor-pointer"
-                      >
-                        <Star className={`w-5 h-5 ${star <= newReviewRating ? 'fill-amber-400 text-amber-400' : 'text-slate-300'}`} />
-                      </button>
                     ))}
                   </div>
                 </div>
-                <textarea
-                  required
-                  rows={3}
-                  value={newReviewComment}
-                  onChange={(e) => setNewReviewComment(e.target.value)}
-                  placeholder="Share details of your experience, food quality, changing rooms, and pool cleanliness..."
-                  className="w-full p-3 rounded-2xl border border-slate-200/80 bg-white/90 text-xs font-medium focus:outline-emerald-500"
-                />
-                <button
-                  type="submit"
-                  className="btn-3d-emerald text-white font-extrabold text-xs px-5 py-2.5 rounded-xl shadow-md cursor-pointer"
-                >
-                  Submit Verified Review
-                </button>
-              </form>
 
-            </div>
+                {/* Policies & Rules */}
+                <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-white/90 shadow-[0_15px_35px_rgba(0,0,0,0.04)] space-y-4">
+                  <h3 className="text-lg font-black text-slate-900">Stay & Dayout Policies</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                    <div className="p-3.5 rounded-2xl bg-white/80 border border-white/90 shadow-2xs space-y-1">
+                      <span className="font-extrabold text-slate-400 uppercase text-[10px]">Dayout Hours</span>
+                      <p className="font-bold text-slate-800">09:00 AM - 05:30 PM (Evening Departure)</p>
+                    </div>
+                    <div className="p-3.5 rounded-2xl bg-white/80 border border-white/90 shadow-2xs space-y-1">
+                      <span className="font-extrabold text-slate-400 uppercase text-[10px]">Overnight Check-In / Check-Out</span>
+                      <p className="font-bold text-slate-800">Check-in: 02:00 PM • Check-out: 11:00 AM</p>
+                    </div>
+                    <div className="p-3.5 rounded-2xl bg-white/80 border border-white/90 shadow-2xs space-y-1">
+                      <span className="font-extrabold text-slate-400 uppercase text-[10px]">Cancellation Terms</span>
+                      <p className="font-bold text-slate-800">Free cancellation up to 48 hours prior to check-in.</p>
+                    </div>
+                    <div className="p-3.5 rounded-2xl bg-white/80 border border-white/90 shadow-2xs space-y-1">
+                      <span className="font-extrabold text-slate-400 uppercase text-[10px]">Channel Manager Sync</span>
+                      <p className="font-bold text-sky-700">Real-time calendar updates with Booking.com iCal.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 3: CONTACTS & INQUIRIES (ALL CONTACT DETAILS IN ONE DEDICATED TAB) */}
+            {activeSectionTab === 'CONTACTS' && (
+              <div className="space-y-6 animate-in fade-in">
+                {/* Main Contacts Spotlight Card */}
+                <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-emerald-900 via-teal-900 to-slate-900 text-white shadow-xl border-2 border-emerald-500/40 space-y-6 relative overflow-hidden">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/15 pb-5">
+                    <div>
+                      <span className="text-[10px] font-black uppercase bg-emerald-500/30 text-emerald-300 px-3 py-1 rounded-full border border-emerald-400/30 inline-block mb-1">
+                        Verified Accommodation Hotlines & WhatsApp
+                      </span>
+                      <h3 className="text-2xl sm:text-3xl font-black text-white">
+                        {property.title} ❤️
+                      </h3>
+                      <p className="text-xs sm:text-sm text-emerald-200 mt-1 max-w-xl">
+                        අනුරාධපුර වන්දනාවේ එන ඔබට ගෙදර වගේ නිදහසේ නවාතැන් ගන්න, පූජා නගරයට විනාඩි 5කින් ළගා වෙන්න පුලුවන් තැනක්
+                      </p>
+                    </div>
+                    <span className="px-3.5 py-1.5 rounded-xl bg-white/10 text-xs font-bold border border-white/20 self-start sm:self-auto">
+                      Anuradhapura
+                    </span>
+                  </div>
+
+                  {/* 3 Hotlines Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {/* Landline */}
+                    <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/15 flex flex-col justify-between gap-3">
+                      <div>
+                        <span className="text-[10px] font-black uppercase text-emerald-300 tracking-wider">
+                          Direct Hotline (ලෑන්ඩ්ලයින්)
+                        </span>
+                        <p className="text-xl font-black text-white mt-0.5">{mainPhone}</p>
+                        <p className="text-[11px] text-slate-300">කාමර ඇබෑර්තු සහ ගාස්තු විමසීම්</p>
+                      </div>
+                      <a
+                        href={`tel:${mainPhone}`}
+                        className="w-full py-2.5 px-3 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 transition-all shadow-md"
+                      >
+                        <PhoneCall className="w-4 h-4" />
+                        <span>Call: {mainPhone}</span>
+                      </a>
+                    </div>
+
+                    {/* Mobile */}
+                    {secondPhone && (
+                      <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/15 flex flex-col justify-between gap-3">
+                        <div>
+                          <span className="text-[10px] font-black uppercase text-emerald-300 tracking-wider">
+                            Mobile / Reservations (ජංගම)
+                          </span>
+                          <p className="text-xl font-black text-white mt-0.5">{secondPhone}</p>
+                          <p className="text-[11px] text-slate-300">දිනයන් වෙන්කරවා ගැනීම් සහ සහාය</p>
+                        </div>
+                        <a
+                          href={`tel:${secondPhone}`}
+                          className="w-full py-2.5 px-3 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 transition-all shadow-md"
+                        >
+                          <Phone className="w-4 h-4" />
+                          <span>Call: {secondPhone}</span>
+                        </a>
+                      </div>
+                    )}
+
+                    {/* WhatsApp Direct */}
+                    <div className="bg-emerald-600/30 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-emerald-400/40 flex flex-col justify-between gap-3">
+                      <div>
+                        <span className="text-[10px] font-black uppercase text-emerald-200 tracking-wider">
+                          Official WhatsApp
+                        </span>
+                        <p className="text-xl font-black text-white mt-0.5">{whatsappNumber}</p>
+                        <p className="text-[11px] text-emerald-100">ක්ෂණික WhatsApp Chat & ඡායාරූප</p>
+                      </div>
+                      <a
+                        href={whatsappChatUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-2.5 px-3 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black text-xs rounded-xl flex items-center justify-center gap-2 transition-all shadow-md"
+                      >
+                        <MessageCircle className="w-4 h-4 fill-slate-950" />
+                        <span>Chat on WhatsApp</span>
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Highlights Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-white/10 text-xs">
+                    <div className="flex items-start gap-2.5 bg-white/5 p-3 rounded-xl border border-white/10">
+                      <MapPin className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-extrabold text-white">පූජා නගරයට විනාඩි 5 යි</p>
+                        <p className="text-slate-300 text-[11px]">Just 5 mins to sacred city & pilgrimage sites.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2.5 bg-white/5 p-3 rounded-xl border border-white/10">
+                      <Utensils className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-extrabold text-white">Vedda Sappayama Delivery</p>
+                        <p className="text-slate-300 text-[11px]">නොමිලේ ආහාර delivery පහසුකම (Free Delivery).</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2.5 bg-white/5 p-3 rounded-xl border border-white/10">
+                      <Sparkles className="w-4 h-4 text-teal-400 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-extrabold text-white">කිරි ආහාර සූදානම් පහසුකම්</p>
+                        <p className="text-slate-300 text-[11px]">Free arrangements & kitchen support for Kiri Ahara.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Direct WhatsApp Inquiry Messenger Box */}
+                <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-md space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                    <div>
+                      <span className="text-[10px] font-black uppercase text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                        Quick Inquiry Messenger
+                      </span>
+                      <h4 className="text-lg font-black text-slate-900 mt-1">
+                        White Lotus වෙත WhatsApp පණිවිඩයක් යවන්න
+                      </h4>
+                    </div>
+                    <span className="text-xs font-bold text-slate-500">Direct to {cleanWhatsApp}</span>
+                  </div>
+
+                  <form 
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      const msg = `Hello White Lotus Resort,\nMy Name: ${contactFormName || 'Guest'}\nPhone: ${contactFormPhone || 'Not provided'}\nDate: ${contactFormDate || 'Upcoming'}\nGuests: ${contactFormGuests}\nMessage: ${contactFormMsg || 'I would like to inquire about booking details.'}`;
+                      window.open(`https://wa.me/${cleanWhatsApp}?text=${encodeURIComponent(msg)}`, '_blank');
+                      setContactFormSent(true);
+                    }}
+                    className="space-y-4 text-xs font-semibold"
+                  >
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div className="space-y-1">
+                        <label className="text-slate-700">Your Name (නම):</label>
+                        <input
+                          type="text"
+                          value={contactFormName}
+                          onChange={(e) => setContactFormName(e.target.value)}
+                          placeholder="e.g. Kasun Silva"
+                          className="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 font-bold focus:bg-white focus:outline-emerald-500"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-slate-700">Phone Number (දුරකථන අංකය):</label>
+                        <input
+                          type="tel"
+                          value={contactFormPhone}
+                          onChange={(e) => setContactFormPhone(e.target.value)}
+                          placeholder="07x xxxxxxx"
+                          className="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 font-bold focus:bg-white focus:outline-emerald-500"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div className="space-y-1">
+                        <label className="text-slate-700">Expected Stay Date (දිනය):</label>
+                        <input
+                          type="date"
+                          value={contactFormDate}
+                          onChange={(e) => setContactFormDate(e.target.value)}
+                          className="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 font-bold focus:bg-white focus:outline-emerald-500"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-slate-700">Number of Guests (පිරිස):</label>
+                        <select
+                          value={contactFormGuests}
+                          onChange={(e) => setContactFormGuests(e.target.value)}
+                          className="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 font-bold focus:bg-white focus:outline-emerald-500"
+                        >
+                          <option value="3 Guests">3 Guests (Upper Floor)</option>
+                          <option value="4 Guests">4 Guests (Standard / Upper Floor)</option>
+                          <option value="6 Guests">6 Guests (Upper Floor Group Room)</option>
+                          <option value="10 Guests">10 Guests Special Group (Rs. 11,000 - 16,000)</option>
+                          <option value="21 Guests">Entire Property (21 Guests Max)</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-slate-700">Special Requests / Message (විමසීම්):</label>
+                      <textarea
+                        rows={2}
+                        value={contactFormMsg}
+                        onChange={(e) => setContactFormMsg(e.target.value)}
+                        placeholder="AC/Non-AC, Kitchen පහසුකම්, කිරි ආහාර සූදානම ආදිය..."
+                        className="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 font-bold focus:bg-white focus:outline-emerald-500"
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-black text-xs rounded-xl shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer"
+                    >
+                      <Send className="w-4 h-4" />
+                      <span>Send Direct to WhatsApp ({cleanWhatsApp})</span>
+                    </button>
+                    {contactFormSent && (
+                      <p className="text-[11px] text-emerald-600 font-bold text-center">
+                        ✓ Opening WhatsApp with your inquiry message...
+                      </p>
+                    )}
+                  </form>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 4: REVIEWS & RATINGS */}
+            {activeSectionTab === 'REVIEWS' && (
+              <div className="space-y-6 animate-in fade-in">
+                <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-white/90 shadow-[0_15px_35px_rgba(0,0,0,0.04)] space-y-6">
+                  <div className="flex items-center justify-between border-b border-slate-200/60 pb-4">
+                    <div>
+                      <h3 className="text-lg font-black text-slate-900">Guest Reviews</h3>
+                      <p className="text-xs text-slate-500">Verified travelers who booked on Ceylon DayOuts</p>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-amber-700 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-200/60 font-black text-sm">
+                      <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                      {property.rating} ({propertyReviews.length} reviews)
+                    </div>
+                  </div>
+
+                  {/* Review Feed */}
+                  <div className="space-y-4">
+                    {propertyReviews.length === 0 ? (
+                      <p className="text-xs text-slate-400 italic">No reviews yet for this listing. Be the first to share your experience!</p>
+                    ) : (
+                      propertyReviews.map(rev => (
+                        <div key={rev.id} className="p-4 rounded-2xl bg-white/80 border border-white/90 shadow-2xs space-y-2">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2.5">
+                              <img src={rev.userAvatar} alt={rev.userName} className="w-8 h-8 rounded-full object-cover" />
+                              <div>
+                                <p className="text-xs font-black text-slate-900">{rev.userName}</p>
+                                <p className="text-[10px] text-slate-400">{rev.createdAt}</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-1 text-amber-500">
+                              {Array.from({ length: rev.rating }).map((_, i) => (
+                                <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                              ))}
+                            </div>
+                          </div>
+                          <p className="text-xs text-slate-600 leading-relaxed">{rev.comment}</p>
+                        </div>
+                      ))
+                    )}
+                  </div>
+
+                  {/* Leave a Review Form */}
+                  <form onSubmit={handleReviewSubmit} className="pt-4 border-t border-slate-200/60 space-y-3">
+                    <h4 className="text-xs font-black text-slate-800 uppercase tracking-wider">Leave a Review</h4>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-slate-500 font-bold">Your Rating:</span>
+                      <div className="flex gap-1">
+                        {[1, 2, 3, 4, 5].map(star => (
+                          <button
+                            type="button"
+                            key={star}
+                            onClick={() => setNewReviewRating(star)}
+                            className="p-1 cursor-pointer"
+                          >
+                            <Star className={`w-5 h-5 ${star <= newReviewRating ? 'fill-amber-400 text-amber-400' : 'text-slate-300'}`} />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <textarea
+                      required
+                      rows={3}
+                      value={newReviewComment}
+                      onChange={(e) => setNewReviewComment(e.target.value)}
+                      placeholder="Share details of your experience, food quality, changing rooms, and cleanliness..."
+                      className="w-full p-3 rounded-2xl border border-slate-200/80 bg-white/90 text-xs font-medium focus:outline-emerald-500"
+                    />
+                    <button
+                      type="submit"
+                      className="btn-3d-emerald text-white font-extrabold text-xs px-5 py-2.5 rounded-xl shadow-md cursor-pointer"
+                    >
+                      Submit Verified Review
+                    </button>
+                  </form>
+                </div>
+              </div>
+            )}
 
           </div>
 
@@ -1072,38 +1171,20 @@ export default function PropertyDetailPage() {
                 🔒 Instant confirmation • Pay via PayHere, Card or Bank Transfer
               </p>
 
-              {/* Direct WhatsApp & Host Phone Quick Contact Card */}
-              <div className="pt-3 border-t border-slate-200/60 space-y-2">
-                <span className="text-[11px] font-extrabold uppercase text-slate-500 tracking-wider block">
-                  Direct Host Inquiries & WhatsApp
-                </span>
-                <a
-                  href={whatsappChatUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-2.5 px-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs rounded-xl shadow-sm flex items-center justify-center gap-2 transition-all cursor-pointer"
+              {/* Contacts Tab Reference Link */}
+              <div className="pt-3 border-t border-slate-200/60">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveSectionTab('CONTACTS');
+                    const el = document.getElementById('property-tabs-section');
+                    el?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="w-full py-2.5 px-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold rounded-xl border border-emerald-200/70 flex items-center justify-center gap-1.5 transition-all cursor-pointer"
                 >
-                  <MessageCircle className="w-4 h-4 fill-white" />
-                  <span>Chat on WhatsApp ({whatsappNumber})</span>
-                </a>
-                <div className="flex gap-2">
-                  <a
-                    href={`tel:${mainPhone}`}
-                    className="flex-1 py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl border border-slate-200/80 flex items-center justify-center gap-1.5 transition-all"
-                  >
-                    <PhoneCall className="w-3.5 h-3.5 text-emerald-600" />
-                    <span>{mainPhone}</span>
-                  </a>
-                  {secondPhone && (
-                    <a
-                      href={`tel:${secondPhone}`}
-                      className="flex-1 py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl border border-slate-200/80 flex items-center justify-center gap-1.5 transition-all"
-                    >
-                      <Phone className="w-3.5 h-3.5 text-slate-600" />
-                      <span>{secondPhone}</span>
-                    </a>
-                  )}
-                </div>
+                  <PhoneCall className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>View All Hotlines & Contacts in Contacts Tab</span>
+                </button>
               </div>
 
             </div>
@@ -1130,16 +1211,18 @@ export default function PropertyDetailPage() {
         </div>
 
         <div className="flex items-center gap-2">
-          <a
-            href={whatsappChatUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-3 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl shadow-md flex items-center justify-center gap-1.5 text-xs font-black"
-            title="Chat on WhatsApp"
+          <button
+            onClick={() => {
+              setActiveSectionTab('CONTACTS');
+              const el = document.getElementById('property-tabs-section');
+              el?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="px-3 py-2 bg-emerald-50 text-emerald-800 rounded-xl border border-emerald-200/80 shadow-2xs flex items-center justify-center gap-1.5 text-xs font-bold"
+            title="Contacts Tab"
           >
-            <MessageCircle className="w-4 h-4 fill-white" />
-            <span>WhatsApp</span>
-          </a>
+            <PhoneCall className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Contacts</span>
+          </button>
           <button
             onClick={() => {
               const widget = document.getElementById('booking-widget-section');
@@ -1170,23 +1253,6 @@ export default function PropertyDetailPage() {
         </div>
       </div>
 
-      {/* Floating WhatsApp Quick Action Button */}
-      <a
-        href={whatsappChatUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-20 lg:bottom-8 right-6 z-50 group flex items-center gap-2.5 px-4 py-3 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white shadow-[0_8px_25px_rgba(16,185,129,0.45)] border-2 border-white/60 hover:scale-105 active:scale-95 transition-all duration-300 backdrop-blur-md cursor-pointer"
-        title="Direct WhatsApp Quick Link"
-      >
-        <div className="relative">
-          <MessageCircle className="w-5 h-5 fill-white" />
-          <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-lime-400 rounded-full animate-ping" />
-          <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-lime-400 rounded-full" />
-        </div>
-        <span className="font-black text-xs tracking-tight shadow-xs pr-1">
-          WhatsApp Chat
-        </span>
-      </a>
 
       {/* Checkout & Payment Gateway Modal */}
       {checkoutData && (

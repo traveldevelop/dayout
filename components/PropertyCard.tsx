@@ -148,28 +148,6 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, onSelect }
           </div>
 
           <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                const waNum = (property.contactWhatsApp || '+94718805858').replace(/[^0-9]/g, '');
-                const url = `https://wa.me/${waNum}?text=${encodeURIComponent(`Hello, I would like to inquire about "${property.title}".`)}`;
-                const a = document.createElement('a');
-                a.href = url;
-                a.target = '_blank';
-                a.rel = 'noopener noreferrer';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-              }}
-              className="px-2.5 sm:px-3 py-2 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white text-xs font-black rounded-xl shadow-md flex items-center gap-1.5 transition-all z-20 cursor-pointer"
-              title="WhatsApp Quick Link - Direct Chat"
-            >
-              <span className="text-sm leading-none">💬</span>
-              <span className="hidden sm:inline font-extrabold text-[11px]">WhatsApp</span>
-            </button>
-
             <span className="btn-3d-emerald text-white text-xs font-black rounded-xl px-3.5 py-2.5 shadow-md flex items-center gap-1.5 group/btn cursor-pointer">
               View & Book 
               <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />

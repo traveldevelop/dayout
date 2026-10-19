@@ -18,12 +18,12 @@ import {
   Sparkles,
   Menu,
   X,
-  MessageCircle
+  PhoneCall
 } from 'lucide-react';
 
 interface NavbarProps {
-  activeTab: 'EXPLORE' | 'WISHLIST' | 'MY_BOOKINGS' | 'HOST_DASHBOARD' | 'ADMIN_PANEL';
-  setActiveTab: (tab: 'EXPLORE' | 'WISHLIST' | 'MY_BOOKINGS' | 'HOST_DASHBOARD' | 'ADMIN_PANEL') => void;
+  activeTab: 'EXPLORE' | 'CONTACTS' | 'WISHLIST' | 'MY_BOOKINGS' | 'HOST_DASHBOARD' | 'ADMIN_PANEL';
+  setActiveTab: (tab: 'EXPLORE' | 'CONTACTS' | 'WISHLIST' | 'MY_BOOKINGS' | 'HOST_DASHBOARD' | 'ADMIN_PANEL') => void;
   onOpenNotifications: () => void;
 }
 
@@ -96,6 +96,18 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, onOpenN
             >
               <Search className="w-3.5 h-3.5" />
               Explore Stays
+            </button>
+
+            <button
+              onClick={() => setActiveTab('CONTACTS')}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+                activeTab === 'CONTACTS'
+                  ? 'bg-white text-emerald-700 shadow-[0_4px_12px_rgba(16,185,129,0.15),inset_0_1px_0_rgba(255,255,255,1)] border border-emerald-100/60 scale-[1.02]'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/40'
+              }`}
+            >
+              <PhoneCall className="w-3.5 h-3.5" />
+              Contacts
             </button>
 
             <button
@@ -218,18 +230,6 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, onOpenN
               )}
             </div>
 
-            {/* WhatsApp Quick Link Direct Button */}
-            <a
-              href="https://wa.me/94718805858?text=Hello%2C%20I%20would%20like%20to%20inquire%20about%20booking%20White%20Lotus%20Resort%20/%20DayOuts."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-3 sm:px-3.5 py-2 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black flex items-center gap-1.5 shadow-[0_4px_12px_rgba(16,185,129,0.3)] hover:scale-105 active:scale-95 transition-all cursor-pointer border border-emerald-400/40"
-              title="Direct WhatsApp Quick Link (wa.me/+94718805858)"
-            >
-              <MessageCircle className="w-3.5 h-3.5 fill-white" />
-              <span className="hidden sm:inline">WhatsApp Quick Link</span>
-              <span className="sm:hidden">WhatsApp</span>
-            </a>
 
             {/* Notification Bell (3D Glass Button) */}
             <button
@@ -267,6 +267,16 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, onOpenN
         >
           <Search className="w-5 h-5" />
           <span className="text-[10px]">Explore</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('CONTACTS')}
+          className={`flex flex-col items-center gap-1 transition-all ${
+            activeTab === 'CONTACTS' ? 'text-emerald-700 font-extrabold scale-105' : 'text-slate-500 hover:text-slate-900'
+          }`}
+        >
+          <PhoneCall className="w-5 h-5" />
+          <span className="text-[10px]">Contacts</span>
         </button>
 
         <button

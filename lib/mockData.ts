@@ -1107,6 +1107,7 @@ export const AMENITIES_LIST = [
 
 export const SRI_LANKA_CITIES = [
   'All Cities',
+  'Anuradhapura',
   'Bentota',
   'Colombo',
   'Kandy',

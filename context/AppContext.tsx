@@ -42,6 +42,7 @@ interface AppContextType {
   // Property Actions
   addProperty: (propertyData: Partial<Property>) => Property;
   updateProperty: (propertyId: string, updates: Partial<Property>) => void;
+  deleteProperty: (propertyId: string) => void;
   updatePropertyStatus: (propertyId: string, status: 'APPROVED' | 'PENDING' | 'REJECTED') => void;
   blockPropertyDates: (propertyId: string, dates: string[]) => void;
   
@@ -305,7 +306,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Action implementations
   const addProperty = (propertyData: Partial<Property>): Property => {
-    const id = `prop-${Date.now()}`;
+    const id = propertyData.id || `prop-${Date.now()}`;
     const newProp: Property = {
       id,
       ownerId: currentUser.id,
@@ -320,19 +321,25 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       district: propertyData.district || 'Colombo',
       lat: propertyData.lat || 6.9271,
       lng: propertyData.lng || 79.8612,
-      rating: 5.0,
-      reviewCount: 1,
+      rating: propertyData.rating || 5.0,
+      reviewCount: propertyData.reviewCount || 1,
       featuredImage: propertyData.featuredImage || 'https://picsum.photos/seed/newstay/1200/800',
       images: propertyData.images?.length ? propertyData.images : ['https://picsum.photos/seed/newstay/1200/800'],
       amenities: propertyData.amenities || ['Swimming Pool', 'Wi-Fi', 'Air Conditioning'],
-      featured: false,
-      status: currentRole === 'ADMIN' ? 'APPROVED' : 'PENDING',
+      featured: propertyData.featured ?? false,
+      status: currentRole === 'ADMIN' ? 'APPROVED' : (propertyData.status || 'PENDING'),
       pricePerNightLKR: propertyData.pricePerNightLKR || 35000,
       pricePerDayoutLKR: propertyData.pricePerDayoutLKR || 8000,
       dayoutPackage: propertyData.dayoutPackage,
+      contactPhone: propertyData.contactPhone,
+      contactPhone2: propertyData.contactPhone2,
+      contactWhatsApp: propertyData.contactWhatsApp,
+      extraGuestFeeLKR: propertyData.extraGuestFeeLKR,
+      specialPromoBanner: propertyData.specialPromoBanner,
+      floorSections: propertyData.floorSections,
       bookingComSyncEnabled: propertyData.bookingComSyncEnabled || false,
       rooms: propertyData.rooms || [],
-      blockedDates: [],
+      blockedDates: propertyData.blockedDates || [],
     };
 
     setProperties(prev => [newProp, ...prev]);
@@ -351,6 +358,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const updateProperty = (propertyId: string, updates: Partial<Property>) => {
     setProperties(prev => prev.map(p => p.id === propertyId ? { ...p, ...updates } : p));
+  };
+
+  const deleteProperty = (propertyId: string) => {
+    setProperties(prev => prev.filter(p => p.id !== propertyId));
   };
 
   const updatePropertyStatus = (propertyId: string, status: 'APPROVED' | 'PENDING' | 'REJECTED') => {
@@ -583,6 +594,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         filteredProperties,
         addProperty,
         updateProperty,
+        deleteProperty,
         updatePropertyStatus,
         blockPropertyDates,
         createBooking,

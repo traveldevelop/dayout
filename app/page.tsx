@@ -11,6 +11,7 @@ import { CheckoutModal } from '@/components/CheckoutModal';
 import { HostDashboard } from '@/components/HostDashboard';
 import { AdminPanel } from '@/components/AdminPanel';
 import { UserProfile } from '@/components/UserProfile';
+import { ContactsView } from '@/components/ContactsView';
 import { NotificationDrawer } from '@/components/NotificationDrawer';
 import { Property, Booking } from '@/types/dayout';
 import { useRouter } from 'next/navigation';
@@ -30,7 +31,7 @@ function CeylonDayOutsAppContent() {
   const router = useRouter();
   const { filteredProperties, filters, resetFilters, currentUser } = useApp();
 
-  const [activeTab, setActiveTab] = useState<'EXPLORE' | 'WISHLIST' | 'MY_BOOKINGS' | 'HOST_DASHBOARD' | 'ADMIN_PANEL'>('EXPLORE');
+  const [activeTab, setActiveTab] = useState<'EXPLORE' | 'CONTACTS' | 'WISHLIST' | 'MY_BOOKINGS' | 'HOST_DASHBOARD' | 'ADMIN_PANEL'>('EXPLORE');
   const [viewMode, setViewMode] = useState<'GRID' | 'MAP'>('GRID');
   
   // Navigation handler to dedicated property page
@@ -159,6 +160,11 @@ function CeylonDayOutsAppContent() {
             )}
 
           </div>
+        )}
+
+        {/* VIEW: CONTACTS & INQUIRIES */}
+        {activeTab === 'CONTACTS' && (
+          <ContactsView onSelectProperty={(id) => router.push(`/property/${id}`)} />
         )}
 
         {/* VIEW 2: WISHLIST */}
